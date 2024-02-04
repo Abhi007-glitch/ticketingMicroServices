@@ -9,12 +9,15 @@ const errors = validationResult(req); // applying defined validation over the re
 
 if(!errors.isEmpty()) // checking if errors array is empty 
 {
-  res.status(400).send(errors.array()); // sending all eror messages
+  //res.status(400).send(errors.array()); // sending all eror messages
+  throw new Error("Invalid Email or password");   /// will be automaticllay caught by the errorHandling middleware 
 }
 
   const {email,password}=req.body;
 
   console.log("Creating user")
+
+  throw new Error("Error connectiong to DB");
 
   res.send({});
 });
