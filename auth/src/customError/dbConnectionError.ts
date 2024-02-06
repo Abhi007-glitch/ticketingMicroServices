@@ -1,7 +1,8 @@
 import {ValidationError} from 'express-validator';
+import CustomError from './CustomErrorIF';
 
 // creating a custom validation error by deriving from Built in error class
-export class DataBaseConnectionError extends Error {
+export class DataBaseConnectionError extends Error implements CustomError {
    public reason="Error connecting to database";  // defining varaible with access specifier
    statusCode = 500; 
    constructor()
@@ -13,6 +14,6 @@ export class DataBaseConnectionError extends Error {
    }
 
    serializeError(){    // adding for separation of concern of formatting error within the error
-      return {errors:[{message:this.reason}]};
+      return [{message:this.reason}];
    }
 }
