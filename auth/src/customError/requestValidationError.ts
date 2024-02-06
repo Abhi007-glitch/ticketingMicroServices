@@ -1,20 +1,22 @@
 import {ValidationError} from 'express-validator';
-import CustomError from './CustomErrorIF';
+
+import { CustomError } from './CustomErrorAbstrac';
 
 // creating a custom validation error by deriving from Built in error class
-export class RequestValidationError extends Error implements CustomError {
+export class RequestValidationError extends CustomError {
    public errors:ValidationError[];  // defining varaible with access specifier
    statusCode=400;
    constructor(errors:ValidationError[])
    {
-      super();  // calling parent class constructor 
+      super("invalid parameter passed");  // just for logggin purpose for developer
+      // calling parent class constructor 
       this.errors =errors;
 
       // adding this only because we are extending a built in class ( it's a performance optimzation based on JS engine archit.)
       Object.setPrototypeOf(this,RequestValidationError.prototype);
    }
     
-   serializeError()
+   serializeErrors()
    {
    return this.errors.map((e)=>{
         
