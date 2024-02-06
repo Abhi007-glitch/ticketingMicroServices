@@ -11,24 +11,21 @@ export const errorHandler = (err:Error,req:Request,res:Response,next:NextFunctio
      {
         console.log('handling  validation error');
         
-        const formattedError = err.errors.map((e)=>{
-          if (e.type="field")
-          {
-               return {message:e.msg};
-          }
-        });
-
-        res.status(400).send({error:formattedError});
+        res.status(err.statusCode).send(err.serializeError());
      }
 
-     if (err instanceof  DataBaseConnectionError)
+     else if (err instanceof  DataBaseConnectionError)
      {
           console.log("handling database error");
 
-          res.send(500).send({error:[{message:err.reason}]}); // for having a consistent error formate
+          res.status(err.statusCode).send(err.serializeError()); // for having a consistent error formate
      }
-      
+     else 
+     {
      res.status(400).send({
       error:[{message:err.message}]  // for having a consistent error formate
      });
+     }
+      
+    
 }
