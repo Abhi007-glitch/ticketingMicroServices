@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-mongo-srv
+  name: auth-mongo-srv  #this name would be used in url to connect to this mongoDB instance
 spec:
   selector:
     app: auth-mongo

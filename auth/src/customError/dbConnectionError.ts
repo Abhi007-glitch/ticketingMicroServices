@@ -10,11 +10,13 @@ export class DataBaseConnectionError extends CustomError {
    {
       super("Error Connceting to db ");  // calling parent class constructor 
 
-      // adding this only because we are extending a built in class ( it's a performance optimzation based on JS engine archit.)
-      Object.setPrototypeOf(this,DataBaseConnectionError.prototype);
+      // adding this to inherit all the the property in the prototype of DatabaseConnection-> did this as we DatabaseConnection extends CustomError which inherit inbuilt class
+      Object.setPrototypeOf(this,DataBaseConnectionError.prototype); // ( (this->object whose prototype to be updated, DataBaseConnectionError.prototype-> Prototype to be applied))
    }
 
    serializeErrors(){    // adding for separation of concern of formatting error within the error
       return [{message:this.reason}];
    }
+   
+   
 }

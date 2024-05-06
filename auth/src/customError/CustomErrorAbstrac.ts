@@ -6,7 +6,6 @@
     Object.setPrototypeOf(this,CustomError.prototype);
   }
   
-
   abstract serializeErrors():{message:string}[];
 
  }

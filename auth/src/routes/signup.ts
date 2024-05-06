@@ -2,6 +2,8 @@ import express, {Request,Response} from "express";
 import {body,validationResult} from "express-validator"
 import { RequestValidationError} from "../customError/requestValidationError";
 import { DataBaseConnectionError } from "../customError/dbConnectionError";
+import { User } from "../models/user";
+import { BadRequestError } from "../customError/badRequestError";
 
 const router = express.Router();
 
@@ -21,11 +23,18 @@ if(!errors.isEmpty()) // checking if errors array is empty
 
   const {email,password}=req.body;
 
-  console.log("Creating user")
+  const fetchedUser = await User.findOne({email})
 
-  throw new DataBaseConnectionError();
+  if (fetchedUser)
+    {
+      throw new BadRequestError("Email already in use")
+    }
+   
+  const user = User.build({email,password})
+  await user.save();
 
-  res.send({});
+  res.status(201).send(user);
+
 });
 
 

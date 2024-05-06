@@ -1,6 +1,7 @@
 import express from "express";
 import 'express-async-errors'; // to handle async error thrown (as express by default only catches error thrown by a sync method ), just need to import this
 import {json} from "body-parser";
+import mongoose from "mongoose";
 import { currentuserRouter } from "./routes/curent_user";
 import { signinRouter } from "./routes/signin";
 import  { signupRouter } from "./routes/signup";
@@ -24,6 +25,20 @@ app.all('*',async()=>{
 app.use(errorHandler); 
 
 
-app.listen(3000,()=>{
-  console.log("Auth service up and running at port number 3000")
-})
+const startUp = async()=>{
+  
+  try {
+    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth')
+    console.log("Connected to database successfully.")
+  } catch (error) {
+    console.error(error)
+  }
+
+  // if sucessfully database connection built
+  app.listen(3000,()=>{
+    console.log("service up and running at port number 3000")
+  })
+}
+
+startUp()
+

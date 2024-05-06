@@ -12,7 +12,7 @@ export const errorHandler = (err:Error,req:Request,res:Response,next:NextFunctio
      {
         console.log('handling  validation error');
         
-       return res.status(err.statusCode).send(err.serializeErrors());
+       return res.status(err.statusCode).send({"errors":err.serializeErrors()});
      }
  
      
