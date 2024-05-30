@@ -15,6 +15,13 @@ spec:
       containers:
         - name: auth
           image: abhi922sharma/auth
+          env:
+            - name: JWT_SECRET_KEY  #name by which it will be accessed inside the auth container
+              valueFrom :
+                secretKeyRef:
+                  name : jwt-key   # name of the secret key variable which is object containing multiple secrets 
+                  key : JWT_SECRET_KEY # name of the property inside "JWT_KEY" in this example
+                  # command to create a new sceret variable : kubectl create secret generic(<type_of_secret>) jwt-key (<secret variable name>) --from- literal=JWT_SECRET_KEY(<name of secret property inside secret variable>)=some_secret_value 
 
 ---
 apiVersion: v1

@@ -8,14 +8,20 @@ import  { signupRouter } from "./routes/signup";
 import { signoutRouter } from "./routes/signout";
 import { errorHandler } from "./middlewares/errorHandler";
 import { NotFoundError } from "./customError/notFoundError";
+import cookieSession from "cookie-session";
 const app = express();
 
+app.set('trust proxy', 1)
 
+app.use(cookieSession( {signed:false,
+  secure:true
+}))
 app.use(json());
 app.use(currentuserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
+
 
 app.all('*',async()=>{
    throw new NotFoundError();
@@ -27,6 +33,13 @@ app.use(errorHandler);
 
 const startUp = async()=>{
   
+  // early catch of error
+  if (!process.env.JWT_SECRET_KEY)
+    {
+      throw Error("JWT Secret key need to defined")
+    }
+
+
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth')
     console.log("Connected to database successfully.")
@@ -38,7 +51,8 @@ const startUp = async()=>{
   app.listen(3000,()=>{
     console.log("service up and running at port number 3000")
   })
+  
 }
 
-startUp()
+startUp();
 
