@@ -10,10 +10,17 @@ spec:
     - host: ticketing.dev
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/users/?(.*) ## the oreder in which these path are matched is the same order in which they are defined
             pathType: Prefix
             backend:
               service:
                 name: auth-srv
+                port:
+                  number: 3000
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
                 port:
                   number: 3000
